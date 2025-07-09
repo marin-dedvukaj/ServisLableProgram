@@ -4,6 +4,30 @@ import win32ui
 class Printables:
     def __init__(self):
         pass
+    
+    def Formaterer(ID = None, Name = None, Phone = None, Address = None, Device = None, Problem = None, Acessories = None, DateOfArrival = None):
+        Text = ""
+
+        Text += f"              Data e arritjes: {DateOfArrival}\n"
+        Text += f"ID: {ID}\n"
+        Text += "-----------------------------------------------\n"
+        if Name is not None:
+            Text += f"Emri: {Name}\n"
+        if Phone is not None:
+            Text += f"Nr Tel: {Phone}\n"
+        if Address is not None:
+            Text += f"Addrea: {Address}\n"
+        if Device is not None:
+            Text += f"Paisja: {Device}\n"
+        if Problem is not None:
+            Text += f"Problemi: {Problem}\n"
+        if Acessories is not None:
+            i = 1
+            Text += "Aksesor:\n"
+            for accessory in Acessories:
+                Text += f"  {i}) {accessory}\n"
+        return Text
+    
     def printOnPaper(self, text, printer_name=None):
         text = text + "\n\n\n\n\n\n\n\n" + b'\x1d\x56\x01'.decode('latin1')
         if not printer_name:
