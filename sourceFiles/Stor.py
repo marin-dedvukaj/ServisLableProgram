@@ -1,8 +1,12 @@
 import csv
 import datetime
 import os
+import tempfile
 class Storer:
-    def __init__(self, filename,filepath):
+    def __init__(self, filename,filepath = None):
+        if filepath == None:
+            filepath = tempfile.gettempdir()
+            print(filepath)
         self.fileName = filename
         self.filePath = filepath
         self.fullPath = f"{self.filePath}/{self.fileName}"
@@ -13,7 +17,7 @@ class Storer:
         if DateOfArrival is None:
             DateOfArrival = datetime.datetime.now().strftime("%Y-%m-%d")
         data = [Name, Phone, Address, Device, Problem, Acessories, DateOfArrival]
-        self.add(data)
+        return self.add(data)
 
     def create(self):
         if os.path.exists(self.fullPath):
@@ -38,20 +42,11 @@ class Storer:
         with open(self.fullPath, mode='a', newline='') as file:
             writer = csv.writer(file)
             writer.writerow([newID] + data)
+        return newID
 
 
     def load(self):
         with open(self.fullPath, mode='r') as file:
             reader = csv.reader(file)
+            next(reader)
             return [row for row in reader]
-
-
-if __name__ == "__main__":
-    storer = Storer("test.csv", "D:/projects/ServisLableProgram/test")
-    storer.create()
-    for i in range(5):
-        storer.addAllDatta(Name=f"User {i}", Phone=f"123456789{i}", Address=f"Address {i}", Device=f"Device {i}", Problem=f"Problem {i}", Acessories=["Accessory1", "Accessory2"])
-    storer.addAllDatta(Name="John Doe", Phone="1234567890", Address="123 Main St", Device="Laptop", Problem="Not charging", Acessories=["Charger","Laptop Bag"], DateOfArrival="2023-10-01")
-    data = storer.load()
-    for row in data:
-        print(row)  

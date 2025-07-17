@@ -5,25 +5,25 @@ class Printables:
     def __init__(self):
         pass
     
-    def Formaterer(ID = None, Name = None, Phone = None, Address = None, Device = None, Problem = None, Acessories = None, DateOfArrival = None):
+    def Formaterer(self,ID = None, Name = None, Phone = None, Address = None, Device = None, Problem = None, Acessories = None, DateOfArrival = None):
         Text = ""
 
-        Text += f"              Data e arritjes: {DateOfArrival}\n"
+        Text += f"              Arrival Date: {DateOfArrival}\n"
         Text += f"ID: {ID}\n"
         Text += "-----------------------------------------------\n"
         if Name is not None:
-            Text += f"Emri: {Name}\n"
+            Text += f"Name: {Name}\n"
         if Phone is not None:
-            Text += f"Nr Tel: {Phone}\n"
+            Text += f"Phone Number: {Phone}\n"
         if Address is not None:
-            Text += f"Addrea: {Address}\n"
+            Text += f"Address: {Address}\n"
         if Device is not None:
-            Text += f"Paisja: {Device}\n"
+            Text += f"Device: {Device}\n"
         if Problem is not None:
-            Text += f"Problemi: {Problem}\n"
+            Text += f"Problem: {Problem}\n"
         if Acessories is not None:
             i = 1
-            Text += "Aksesor:\n"
+            Text += "Aksesories:\n"
             for accessory in Acessories:
                 Text += f"  {i}) {accessory}\n"
         return Text
