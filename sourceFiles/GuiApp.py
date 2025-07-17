@@ -45,10 +45,23 @@ class ServisLabelApp:
             ("Date Of Arrival", self.date_var),
             ("Number of Copies", self.numer_kopjesh_var)
         ]
+        self.numer_kopjesh_var.set("1")  # Default number of copies
+        self.date_var.set(datetime.datetime.now().strftime("%Y-%m-%d"))  # Default date
+
+        self.entries = []  # Store entry widgets for navigation
 
         for idx, (label_text, var) in enumerate(fields):
             ttk.Label(main_frame, text=label_text + ":", style="TLabel").grid(row=idx, column=0, padx=(0,10), pady=8, sticky="e")
-            ttk.Entry(main_frame, textvariable=var, width=30, style="TEntry").grid(row=idx, column=1, padx=(0,0), pady=8, sticky="w")
+            entry = ttk.Entry(main_frame, textvariable=var, width=30, style="TEntry")
+            entry.grid(row=idx, column=1, padx=(0,0), pady=8, sticky="w")
+            self.entries.append(entry)
+
+        # Bind arrow keys for navigation
+        for i, entry in enumerate(self.entries):
+            entry.bind("<Up>", lambda e, idx=i: self.focus_entry(idx-1))
+            entry.bind("<Down>", lambda e, idx=i: self.focus_entry(idx+1))
+            entry.bind("<Left>", lambda e, idx=i: self.focus_entry(idx-1))
+            entry.bind("<Right>", lambda e, idx=i: self.focus_entry(idx+1))
 
         submit_btn = ttk.Button(main_frame, text="Submit", command=self.submit, style="TButton")
         submit_btn.grid(row=len(fields), column=0, pady=15, sticky="ew")
@@ -59,6 +72,10 @@ class ServisLabelApp:
         main_frame.grid_columnconfigure(0, weight=1)
         main_frame.grid_columnconfigure(1, weight=1)
 
+    def focus_entry(self, idx):
+        if 0 <= idx < len(self.entries):
+            self.entries[idx].focus_set()
+
     def submit(self):
         Name = self.name_var.get() if self.name_var.get() else None
         Phone = self.phone_var.get() if self.phone_var.get() else None
@@ -67,11 +84,20 @@ class ServisLabelApp:
         Problem = self.problem_var.get() if self.problem_var.get() else None
         Accessories = self.accessories_var.get().split(",") if self.accessories_var.get() else []
         DateOfArrival = self.date_var.get() if self.date_var.get() else datetime.datetime.now().strftime("%Y-%m-%d")
-        numer_kopjesh = int(self.numer_kopjesh_var.get()) if self.numer_kopjesh_var.get().isdigit() else 1
+        numer_kopjesh = int(self.numer_kopjesh_var.get())
         ID = self.storer.addAllDatta(Name, Phone, Address, Device, Problem, Accessories, DateOfArrival)
         receipt_text = self.printer.Formaterer(ID, Name, Phone, Address, Device, Problem, Accessories, DateOfArrival)
         for i in range(numer_kopjesh):
             self.printer.printOnPaper(receipt_text)
+        # Clear entry boxes
+        self.name_var.set("")
+        self.phone_var.set("")
+        self.address_var.set("")
+        self.device_var.set("")
+        self.problem_var.set("")
+        self.accessories_var.set("")
+        self.date_var.set("")
+        self.numer_kopjesh_var.set("")
 
     def open_data_table_window(self):
         data_window = tk.Toplevel(self.root)
