@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from tkinter import messagebox
 from Printer import Printables
 from Stor import Storer
 import datetime
@@ -135,6 +136,21 @@ class ServisLabelApp:
         copies_entry = ttk.Entry(entry_frame, width=10, style="TEntry")
         copies_entry.insert(0, "1")
         copies_entry.pack(side="left", padx=5)
+        
+
+        def Delete():
+            selected = tree.selection()
+            if not selected:
+                tk.messagebox.showwarning("No selection", "Please select a row in the table.")
+                return
+            confirm = tk.messagebox.askyesno("Confirm Delete", "Are you sure you want to delete the selected row?")
+            if not confirm:
+                return
+            item = selected[0]
+            item_values = tree.item(item, "values")
+            ID = item_values[0]
+            self.storer.delete(ID)
+            tree.delete(item)
 
         def on_submit():
             selected = tree.selection()
@@ -152,9 +168,15 @@ class ServisLabelApp:
                 self.printer.printOnPaper(receipt_text)
                 pass
 
-        submit_btn = ttk.Button(main_frame, text="Submit", style="TButton", command=on_submit)
-        submit_btn.pack(pady=10)
+                # Frame to hold both buttons side by side
+        button_frame = ttk.Frame(main_frame, style="TFrame")
+        button_frame.pack(pady=10)
 
+        submit_btn = ttk.Button(button_frame, text="Submit", style="TButton", command=on_submit)
+        submit_btn.pack(side="left", padx=5)
+
+        delete_button = ttk.Button(button_frame, text="Delete", style="TButton", command=Delete)
+        delete_button.pack(side="left", padx=5)
     def load_from_memory(self):
         self.open_data_table_window()
 if __name__ == "__main__":

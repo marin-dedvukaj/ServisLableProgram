@@ -49,3 +49,11 @@ class Storer:
             reader = csv.reader(file)
             next(reader)
             return [row for row in reader]
+    
+    def delete(self, ID):
+        rows = self.load()
+        rows = [row for row in rows if row[0] != str(ID)]
+        with open(self.fullPath, mode='w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(["ID", "Name", "Phone"," Address", "Device","Problem","Acessories","Date Of Arrival"])
+            writer.writerows(rows)
