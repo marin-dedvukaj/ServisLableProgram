@@ -46,10 +46,10 @@ class ServisLabelApp:
             ("Date Of Arrival", self.date_var),
             ("Number of Copies", self.numer_kopjesh_var)
         ]
-        self.numer_kopjesh_var.set("1")  # Default number of copies
-        self.date_var.set(datetime.datetime.now().strftime("%Y-%m-%d"))  # Default date
+        self.numer_kopjesh_var.set("1")
+        self.date_var.set(datetime.datetime.now().strftime("%Y-%m-%d"))
 
-        self.entries = []  # Store entry widgets for navigation
+        self.entries = []
 
         for idx, (label_text, var) in enumerate(fields):
             ttk.Label(main_frame, text=label_text + ":", style="TLabel").grid(row=idx, column=0, padx=(0,10), pady=8, sticky="e")
@@ -57,12 +57,9 @@ class ServisLabelApp:
             entry.grid(row=idx, column=1, padx=(0,0), pady=8, sticky="w")
             self.entries.append(entry)
 
-        # Bind arrow keys for navigation
         for i, entry in enumerate(self.entries):
             entry.bind("<Up>", lambda e, idx=i: self.focus_entry(idx-1))
             entry.bind("<Down>", lambda e, idx=i: self.focus_entry(idx+1))
-            entry.bind("<Left>", lambda e, idx=i: self.focus_entry(idx-1))
-            entry.bind("<Right>", lambda e, idx=i: self.focus_entry(idx+1))
 
         submit_btn = ttk.Button(main_frame, text="Submit", command=self.submit, style="TButton")
         submit_btn.grid(row=len(fields), column=0, pady=15, sticky="ew")
@@ -90,7 +87,7 @@ class ServisLabelApp:
         receipt_text = self.printer.Formaterer(ID, Name, Phone, Address, Device, Problem, Accessories, DateOfArrival)
         for i in range(numer_kopjesh):
             self.printer.printOnPaper(receipt_text)
-        # Clear entry boxes
+
         self.name_var.set("")
         self.phone_var.set("")
         self.address_var.set("")
@@ -168,7 +165,6 @@ class ServisLabelApp:
                 self.printer.printOnPaper(receipt_text)
                 pass
 
-                # Frame to hold both buttons side by side
         button_frame = ttk.Frame(main_frame, style="TFrame")
         button_frame.pack(pady=10)
 
