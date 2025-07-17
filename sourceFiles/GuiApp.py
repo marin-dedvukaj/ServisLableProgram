@@ -96,8 +96,8 @@ class ServisLabelApp:
         self.device_var.set("")
         self.problem_var.set("")
         self.accessories_var.set("")
-        self.date_var.set("")
-        self.numer_kopjesh_var.set("")
+        self.numer_kopjesh_var.set("1")
+        self.date_var.set(datetime.datetime.now().strftime("%Y-%m-%d"))
 
     def open_data_table_window(self):
         data_window = tk.Toplevel(self.root)
