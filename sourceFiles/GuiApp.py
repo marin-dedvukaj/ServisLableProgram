@@ -11,11 +11,9 @@ class ServisLabelApp:
         self.root = root
         self.root.title("Servis Label Program")
 
-        # Use a modern ttk theme
         style = ttk.Style(self.root)
         style.theme_use("clam")
 
-        # Custom styles
         style.configure("TFrame", background="#f5f6fa")
         style.configure("TLabel", background="#f5f6fa", font=("Segoe UI", 11))
         style.configure("TEntry", relief="flat", padding=5)
@@ -25,11 +23,9 @@ class ServisLabelApp:
             foreground=[("active", "#fff")]
         )
 
-        # Main frame with border and padding
         main_frame = ttk.Frame(self.root, padding=30, style="TFrame", borderwidth=2, relief="groove")
         main_frame.pack(padx=40, pady=30)
 
-        # Variables
         self.name_var = tk.StringVar()
         self.phone_var = tk.StringVar()
         self.address_var = tk.StringVar()
@@ -76,24 +72,13 @@ class ServisLabelApp:
         receipt_text = self.printer.Formaterer(ID, Name, Phone, Address, Device, Problem, Accessories, DateOfArrival)
         for i in range(numer_kopjesh):
             self.printer.printOnPaper(receipt_text)
-        
-        print("Name:", self.name_var.get())
-        print("Phone:", self.phone_var.get())
-        print("Address:", self.address_var.get())
-        print("Device:", self.device_var.get())
-        print("Problem:", self.problem_var.get())
-        print("Accessories:", self.accessories_var.get())
-        print("Date Of Arrival:", self.date_var.get())
-        print("Numer kopjesh:", self.numer_kopjesh_var.get())
 
     def open_data_table_window(self):
-        # Create a new top-level window for the data table
         data_window = tk.Toplevel(self.root)
         data_window.title("Data Table App")
         data_window.geometry("900x400")
         data_window.configure(bg="#f5f6fa")
 
-        # Custom styles
         style = ttk.Style(data_window)
         style.configure("TFrame", background="#f5f6fa")
         style.configure("TLabel", background="#f5f6fa", font=("Segoe UI", 11))
@@ -104,14 +89,11 @@ class ServisLabelApp:
             foreground=[("active", "#fff")]
         )
 
-        # Main frame
         main_frame = ttk.Frame(data_window, style="TFrame")
         main_frame.pack(fill="both", expand=True, padx=20, pady=20)
 
-        # Sample data: list of lists, each with 9 items
         data = self.storer.load()
 
-        # Table (Treeview)
         columns = ["ID", "Name", "Phone"," Address", "Device","Problem","Acessories","Date Of Arrival"]
         tree = ttk.Treeview(main_frame, columns=columns, show="headings", height=10)
         for idx, col in enumerate(columns):
@@ -121,7 +103,6 @@ class ServisLabelApp:
             tree.insert("", "end", values=row)
         tree.pack(pady=10, fill="x")
 
-        # Entry for number of copies
         entry_frame = ttk.Frame(main_frame, style="TFrame")
         entry_frame.pack(pady=10)
         ttk.Label(entry_frame, text="Number of copies:", style="TLabel").pack(side="left")
@@ -129,14 +110,13 @@ class ServisLabelApp:
         copies_entry.insert(0, "1")
         copies_entry.pack(side="left", padx=5)
 
-        # Submit button
         def on_submit():
             selected = tree.selection()
             if not selected:
                 tk.messagebox.showwarning("No selection", "Please select a row in the table.")
                 return
             row_data = list(tree.item(selected[0], "values"))
-            # Remove brackets and split accessories string into a list
+
             accessories_str = row_data[6]
             accessories_str = accessories_str.strip("[]")
             accessories_list = [item.strip().strip("'").strip('"') for item in accessories_str.split(",") if item.strip()]
@@ -144,11 +124,7 @@ class ServisLabelApp:
             receipt_text = self.printer.Formaterer(row_data[0], row_data[1], row_data[2], row_data[3], row_data[4], row_data[5], row_data[6], row_data[7])
             for i in range(int(copies_entry.get()) if copies_entry.get() != None else 1):
                 self.printer.printOnPaper(receipt_text)
-                print(receipt_text)
                 pass
-            print(row_data)
-            print("Number of copies:", copies_entry.get())
-            # You can add your logic here to process the selected row
 
         submit_btn = ttk.Button(main_frame, text="Submit", style="TButton", command=on_submit)
         submit_btn.pack(pady=10)

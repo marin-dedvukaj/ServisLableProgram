@@ -6,7 +6,6 @@ class Storer:
     def __init__(self, filename,filepath = None):
         if filepath == None:
             filepath = tempfile.gettempdir()
-            print(filepath)
         self.fileName = filename
         self.filePath = filepath
         self.fullPath = f"{self.filePath}/{self.fileName}"
