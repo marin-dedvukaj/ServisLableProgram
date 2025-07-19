@@ -83,6 +83,12 @@ class ServisLabelApp:
         Accessories = self.accessories_var.get().split(",") if self.accessories_var.get() else []
         DateOfArrival = self.date_var.get() if self.date_var.get() else datetime.datetime.now().strftime("%Y-%m-%d")
         numer_kopjesh = int(self.numer_kopjesh_var.get())
+        for i in [Name, Phone, Address, Device, Problem, Accessories]:
+            if i is not None:
+                break
+            else:
+                messagebox.showwarning("Warning", "Please fill in at least one field to print.")
+            return
         ID = self.storer.addAllDatta(Name, Phone, Address, Device, Problem, Accessories, DateOfArrival)
         receipt_text = self.printer.Formaterer(ID, Name, Phone, Address, Device, Problem, Accessories, DateOfArrival)
         for i in range(numer_kopjesh):

@@ -7,7 +7,6 @@ class Printables:
     
     def Formaterer(self,ID = None, Name = None, Phone = None, Address = None, Device = None, Problem = None, Acessories = None, DateOfArrival = None):
         Text = ""
-
         Text += f"              Arrival Date: {DateOfArrival}\n"
         Text += f"ID: {ID}\n"
         Text += "-----------------------------------------------\n"
@@ -26,9 +25,16 @@ class Printables:
             Text += "Aksesories:\n"
             for accessory in Acessories:
                 Text += f"  {i}) {accessory}\n"
-        return Text
+                i+= 1
+        Text += "-----------------------------------------------\n"
+        for i in [Name, Phone, Address, Device, Problem]:
+            if i is not None:
+                return Text
+        return None
     
     def printOnPaper(self, text, printer_name=None):
+        if text is None:
+            return None
         text = text + "\n\n\n\n\n\n\n\n" + b'\x1d\x56\x01'.decode('latin1')
         if not printer_name:
             printer_name = win32print.GetDefaultPrinter()
