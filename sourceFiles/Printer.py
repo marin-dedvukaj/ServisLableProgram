@@ -4,17 +4,29 @@ import win32ui
 class Printables:
     def __init__(self):
         pass
+    def FormatPhone(self, phone):
+        if phone is None:
+            return None
+        phone = phone.replace(" ", "").replace("-", "")
+        phone = phone.lstrip("+355").lstrip("0")
+        if len(phone) == 10:
+            return f"+355 {phone[:3]} {phone[3:6]} {phone[6:]}"
+        elif len(phone) == 9:
+            return f"+355 {phone[:2]} {phone[2:5]} {phone[5:]}"
+        elif len(phone) == 8:
+            return f"+355 {phone[:2]} {phone[2:4]} {phone[4:]}"
+        else:
+            return phone
     
     def Formaterer(self,ID = None, Name = None, Phone = None, Address = None, Device = None, Problem = None, Acessories = None, DateOfArrival = None):
         Text = ""
-        Text += f"              Arrival Date: {DateOfArrival}\n"
-        Text += f"ID: {ID}\n"
+        Text += f"ID: {ID}          Arrival Date: {DateOfArrival}\n"
         Text += "-----------------------------------------------\n"
-        if Name is not None:
+        if Name is not None:  
             Text += f"Name: {Name}\n"
         if Phone is not None:
-            Text += f"Phone Number: {Phone}\n"
-        if Address is not None:
+            Text += f"Phone Number: {self.FormatPhone(Phone)}\n"
+        if Address is not None and Address != "":
             Text += f"Address: {Address}\n"
         if Device is not None:
             Text += f"Device: {Device}\n"

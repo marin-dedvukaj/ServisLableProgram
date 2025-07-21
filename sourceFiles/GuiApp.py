@@ -14,6 +14,13 @@ class ServisLabelApp:
 
         style = ttk.Style(self.root)
         style.theme_use("clam")
+        try:
+            # Use a .ico file for Windows taskbar icon
+            self.root.iconbitmap("ReciptIcon.ico")
+            # Also set the window icon for ttk themed windows
+            self.root.call('wm', 'iconphoto', self.root._w, tk.PhotoImage(file="ReciptIcon.ico"))
+        except Exception:
+            pass
 
         style.configure("TFrame", background="#f5f6fa")
         style.configure("TLabel", background="#f5f6fa", font=("Segoe UI", 11))
@@ -78,6 +85,10 @@ class ServisLabelApp:
         Name = self.name_var.get() if self.name_var.get() else None
         Phone = self.phone_var.get() if self.phone_var.get() else None
         Address = self.address_var.get() if self.address_var.get() else None
+        while Address[0] == " ":
+            Address = Address[1:]
+        if Address == "":
+            Address = None    
         Device = self.device_var.get() if self.device_var.get() else None
         Problem = self.problem_var.get() if self.problem_var.get() else None
         Accessories = self.accessories_var.get().split(",") if self.accessories_var.get() else []
